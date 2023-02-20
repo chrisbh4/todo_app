@@ -1,4 +1,4 @@
-defmodule Todo.Todo_Items do
+defmodule Todo.TodoItems do
   @moduledoc """
   The Todo_Items context.
   """
