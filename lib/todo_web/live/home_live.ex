@@ -14,7 +14,9 @@ defmodule TodoWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
-    <h1> <%= @name %></h1>
+    <h1 class='text-2xl text-red-400'>
+      <%= @name %>
+    </h1>
 
     <div>
       <.form let={f} for={@changeset} phx-change="form_change" phx-submit="submit">
@@ -22,21 +24,19 @@ defmodule TodoWeb.HomeLive do
         <%= text_input f, :name , placeholder: "Name" %>
         <%= textarea f, :description , placeholder: "Todo description" %>
 
-        <%= submit "Submit" %>
+        <%= submit "Submit"  %>
       </.form>
     </div>
 
-    
+
     """
   end
-
 
   # def handle_event("form_change", %{"item" => %{"description" => values}}, socket) do
   def handle_event("form_change", %{"item" => values}, socket) do
     # IO.inspect(values)
     {:noreply, socket}
   end
-
 
   def handle_event("submit", %{"item" => values}, socket) do
     IO.inspect(values)

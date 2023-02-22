@@ -17,6 +17,16 @@ config :todo, TodoWeb.Endpoint,
   pubsub_server: Todo.PubSub,
   live_view: [signing_salt: "0HYR6fV4"]
 
+
+config :tailwind, version: "3.2.7", default: [
+    args: ~w(
+      --config=tailwind.config.js
+      --input=css/app.css
+      --output=../priv/static/assets/app.css
+    ),
+    cd: Path.expand("../assets", __DIR__)
+  ]
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails
