@@ -11,7 +11,7 @@ defmodule Todo.TodoItems do
   @doc """
   Returns the list of items.
 
-  ## Examples
+  ## Examplesf
 
       iex> list_items()
       [%Item{}, ...]

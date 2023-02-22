@@ -3,12 +3,16 @@ defmodule TodoWeb.HomeLive do
   use Phoenix.HTML
 
   import Todo.TodoItems
+  alias Todo.TodoItems
   alias Todo.Item
 
   def mount(_params, _url, socket) do
     changeset = Todo.Item.changeset(%Item{})
+    all_items = TodoItems.list_items()
 
-    socket = assign(socket, name: "Home Page", changeset: changeset)
+    IO.inspect(all_items)
+
+    socket = assign(socket, name: "Home Page", changeset: changeset, all_items: all_items)
     {:ok, socket}
   end
 
@@ -21,12 +25,23 @@ defmodule TodoWeb.HomeLive do
     <div>
       <.form let={f} for={@changeset} phx-change="form_change" phx-submit="submit">
 
-        <%= text_input f, :name , placeholder: "Name" %>
         <%= textarea f, :description , placeholder: "Todo description" %>
+        <%= number_input f, :prority_value , placeholder: "Prority Rank" %>
 
-        <%= submit "Submit"  %>
+        <%= submit "Submit" %>
       </.form>
     </div>
+
+    <section>
+      <div>
+        <%= for item <- @all_items do  %>
+        <h3>
+          <% item.description %>
+        </h3>
+        <% end %>
+      </div>
+
+    </section>
 
 
     """
@@ -34,13 +49,13 @@ defmodule TodoWeb.HomeLive do
 
   # def handle_event("form_change", %{"item" => %{"description" => values}}, socket) do
   def handle_event("form_change", %{"item" => values}, socket) do
-    # IO.inspect(values)
+    # IO.inspect(values.description)
     {:noreply, socket}
   end
 
-  def handle_event("submit", %{"item" => values}, socket) do
-    IO.inspect(values)
-    new_item = Todo.TodoItems.create_item(values)
+  def handle_event("submit", %{"item" => %{"description" => description, "prority_value" => priority}}, socket) do
+    IO.inspect("Form Submitted!")
+    new_item = Todo.TodoItems.create_item(%{description: description, priority_value: priority})
     changeset = Todo.Item.changeset(%Item{})
 
     socket = assign(socket, new_item: new_item, changeset: changeset)
