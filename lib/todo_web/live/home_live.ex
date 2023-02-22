@@ -10,8 +10,6 @@ defmodule TodoWeb.HomeLive do
     changeset = Todo.Item.changeset(%Item{})
     all_items = TodoItems.list_items()
 
-    IO.inspect(all_items)
-
     socket = assign(socket, name: "Home Page", changeset: changeset, all_items: all_items)
     {:ok, socket}
   end
@@ -33,13 +31,22 @@ defmodule TodoWeb.HomeLive do
     </div>
 
     <section>
-      <div>
         <%= for item <- @all_items do  %>
-        <h3>
-          <% item.description %>
+      <div class='flex' id={"item-#{item.id}"}>
+        <h3 class="mx-4">
+          <%= item.description %>
         </h3>
-        <% end %>
+        <h3>
+          <%= item.priority_value %>
+        </h3>
+
+        <button
+          phx-click="edit_item"
+          class='ml-4 px-4 bg-gray-300'>
+          Edit
+        </button>
       </div>
+        <% end %>
 
     </section>
 
@@ -49,16 +56,14 @@ defmodule TodoWeb.HomeLive do
 
   # def handle_event("form_change", %{"item" => %{"description" => values}}, socket) do
   def handle_event("form_change", %{"item" => values}, socket) do
-    # IO.inspect(values.description)
     {:noreply, socket}
   end
 
   def handle_event("submit", %{"item" => %{"description" => description, "prority_value" => priority}}, socket) do
-    IO.inspect("Form Submitted!")
     new_item = Todo.TodoItems.create_item(%{description: description, priority_value: priority})
     changeset = Todo.Item.changeset(%Item{})
 
-    socket = assign(socket, new_item: new_item, changeset: changeset)
+    socket = assign(socket, all_items: socket.assigns.all_items ++ new_item, changeset: changeset)
 
     {:noreply, socket}
   end
