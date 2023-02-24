@@ -16,41 +16,55 @@ defmodule TodoWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
-    <h1 class='text-2xl text-red-400'>
-      <%= @name %>
-    </h1>
+      <div class='w-full '>
 
-    <div>
-      <.form let={f} for={@changeset} phx-change="form_change" phx-submit="submit">
+        <h1 class='text-2xl text-red-400'>
+          <%= @name %>
+        </h1>
 
-        <%= textarea f, :description , placeholder: "Todo description" %>
-        <%= number_input f, :prority_value , placeholder: "Prority Rank" %>
+        <div  class='mb-5'>
+          <.form let={f} for={@changeset} phx-change="form_change" phx-submit="submit" class='flex justify-around w-1/2'>
 
-        <%= submit "Submit" %>
-      </.form>
-    </div>
+            <%= textarea f, :description , placeholder: "Todo description" %>
+            <%= number_input f, :prority_value , placeholder: "Prority Rank" %>
 
-    <section>
-        <%= for item <- @all_items do  %>
-      <div class='flex' id={"item-#{item.id}"}>
-        <h3 class="mx-4">
-          <%= item.description %>
-        </h3>
-        <h3>
-          <%= item.priority_value %>
-        </h3>
+            <%= submit "Submit" %>
+          </.form>
+        </div>
 
-        <button
-          phx-click="edit_item"
-          class='ml-4 px-4 bg-gray-300'>
-          Edit
-        </button>
+        <section>
+            <%= for item <- @all_items do  %>
+          <div class='flex justify-around w-1/2' id={"item-#{item.id}"}>
+            <h3 class="mx-4">
+              <%= item.description %>
+            </h3>
+            <h3>
+              <%= item.priority_value %>
+            </h3>
+
+            <button
+              phx-click="edit_item"
+              value={"#{item.id}"}
+              class='ml-4 px-4 bg-gray-300'
+              >
+                Edit Item
+            </button>
+            <button
+              phx-click="delete_item"
+              value={"#{item.id}"}
+              class='ml-4 px-4 bg-gray-300'>
+
+              Delete
+            </button>
+          </div>
+            <% end %>
+
+        </section>
+
+
+
+
       </div>
-        <% end %>
-
-    </section>
-
-
     """
   end
 
@@ -67,4 +81,16 @@ defmodule TodoWeb.HomeLive do
 
     {:noreply, socket}
   end
+
+
+def handle_event("delete_item", %{"value" => value}, socket) do
+  IO.inspect(String.to_integer(value))
+  id = String.to_integer(value)
+
+  Todo.TodoItems.delete_item(%Item{id: id})
+
+  socket = assign(socket, all_items: TodoItems.list_items() )
+  {:noreply,socket}
+
+end
 end
