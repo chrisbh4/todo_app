@@ -72,6 +72,9 @@ defmodule TodoWeb.HomeLive do
   def handle_event("form_change", %{"item" => values}, socket) do
     {:noreply, socket}
   end
+  def handle_event("edit_item", %{"value" => values}, socket) do
+    {:noreply, push_patch(socket, to: "/edit")}
+  end
 
   def handle_event("submit", %{"item" => %{"description" => description, "prority_value" => priority}}, socket) do
     new_item = Todo.TodoItems.create_item(%{description: description, priority_value: priority})
