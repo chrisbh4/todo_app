@@ -1,16 +1,19 @@
 defmodule TodoWeb.HomeLive do
   use Phoenix.LiveView
   use Phoenix.HTML
+  use Phoenix.Component
+  # import Todo.TodoItems
 
-  import Todo.TodoItems
   alias Todo.TodoItems
   alias Todo.Item
+
+  alias TodoWeb.Router.Helpers, as: Routes
 
   def mount(_params, _url, socket) do
     changeset = Todo.Item.changeset(%Item{})
     all_items = TodoItems.list_items()
 
-    socket = assign(socket, name: "Home Page", changeset: changeset, all_items: all_items)
+    socket = assign(socket, page_title: "Home Page", changeset: changeset, all_items: all_items)
     {:ok, socket}
   end
 
@@ -18,9 +21,7 @@ defmodule TodoWeb.HomeLive do
     ~H"""
       <div class='w-full '>
 
-        <h1 class='text-2xl text-red-400'>
-          <%= @name %>
-        </h1>
+
 
         <div  class='mb-5'>
           <.form let={f} for={@changeset} phx-change="form_change" phx-submit="submit" class='flex justify-around w-1/2'>
@@ -42,12 +43,10 @@ defmodule TodoWeb.HomeLive do
               <%= item.priority_value %>
             </h3>
 
-            <button
-              phx-click="edit_item"
-              value={"#{item.id}"}
-              class='ml-4 px-4 bg-gray-300'
-              >
-                Edit Item
+            <button>
+            <%= live_redirect "Edit Me",
+              to: Routes.live_path(@socket, TodoWeb.EditLive) %>
+              
             </button>
             <button
               phx-click="delete_item"
@@ -56,7 +55,10 @@ defmodule TodoWeb.HomeLive do
 
               Delete
             </button>
+
           </div>
+
+
             <% end %>
 
         </section>
@@ -72,7 +74,7 @@ defmodule TodoWeb.HomeLive do
   def handle_event("form_change", %{"item" => values}, socket) do
     {:noreply, socket}
   end
-  def handle_event("edit_item", %{"value" => values}, socket) do
+  def handle_event("edit_item", %{"value" => _values}, socket) do
     {:noreply, push_patch(socket, to: "/edit")}
   end
 
