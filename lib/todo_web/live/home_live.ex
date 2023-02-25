@@ -27,7 +27,7 @@ defmodule TodoWeb.HomeLive do
           <.form let={f} for={@changeset} phx-change="form_change" phx-submit="submit" class='flex justify-around w-1/2'>
 
             <%= textarea f, :description , placeholder: "Todo description" %>
-            <%= number_input f, :prority_value , placeholder: "Prority Rank" %>
+            <%= number_input f, :priority_value , placeholder: "Prority Rank" %>
 
             <%= submit "Submit" %>
           </.form>
@@ -45,8 +45,8 @@ defmodule TodoWeb.HomeLive do
 
             <button>
             <%= live_redirect "Edit Me",
-              to: Routes.live_path(@socket, TodoWeb.EditLive) %>
-              
+              to: Routes.live_path(@socket, TodoWeb.EditLive , id: item.id) %>
+
             </button>
             <button
               phx-click="delete_item"
@@ -71,18 +71,22 @@ defmodule TodoWeb.HomeLive do
   end
 
   # def handle_event("form_change", %{"item" => %{"description" => values}}, socket) do
-  def handle_event("form_change", %{"item" => values}, socket) do
+  def handle_event("form_change", %{"item" => _values}, socket) do
     {:noreply, socket}
   end
+
   def handle_event("edit_item", %{"value" => _values}, socket) do
     {:noreply, push_patch(socket, to: "/edit")}
   end
 
-  def handle_event("submit", %{"item" => %{"description" => description, "prority_value" => priority}}, socket) do
-    new_item = Todo.TodoItems.create_item(%{description: description, priority_value: priority})
+  def handle_event("submit", %{"item" => %{"description" => description, "priority_value" => priority}}, socket) do
+    {:ok, new_item} = Todo.TodoItems.create_item(%{description: description, priority_value: priority})
     changeset = Todo.Item.changeset(%Item{})
 
-    socket = assign(socket, all_items: socket.assigns.all_items ++ new_item, changeset: changeset)
+    IO.inspect(socket.assigns.all_items)
+    IO.inspect(new_item)
+
+    socket = assign(socket, all_items: socket.assigns.all_items ++ [new_item] , changeset: changeset)
 
     {:noreply, socket}
   end
