@@ -20,17 +20,6 @@ defmodule TodoWeb.HomeLive do
   def render(assigns) do
     ~H"""
       <div class='w-full '>
-      <div class='bg-gray-300 pt-4 pb-3  '>
-        <nav class='flex justify-around w-1/3   bg-gray-300'>
-          <div>
-            <a href="/users/log_in"> Login </a>
-          </div>
-
-          <div>
-            <a href="/users/register"> Sign Up </a>
-          </div>
-        </nav>
-      </div>
 
         <div class='mb-5'></div>
 
