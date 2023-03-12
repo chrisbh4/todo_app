@@ -5,6 +5,7 @@ defmodule Todo.Item do
   schema "items" do
     field :description, :string
     field :priority_value, :integer
+    field :sub_tasks, :string
 
     timestamps()
   end
@@ -12,7 +13,7 @@ defmodule Todo.Item do
   @doc false
   def changeset(item, attrs \\ %{}) do
     item
-    |> cast(attrs, [:description, :priority_value])
-    |> validate_required([:description, :priority_value])
+    |> cast(attrs, [:description, :priority_value, :sub_tasks])
+    |> validate_required([:description, :priority_value, :sub_tasks])
   end
 end

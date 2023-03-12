@@ -806,10 +806,6 @@ select {
   justify-content: center;
 }
 
-.justify-between {
-  justify-content: space-between;
-}
-
 .justify-around {
   justify-content: space-around;
 }
@@ -830,6 +826,11 @@ select {
   border-width: 0px;
 }
 
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
 .bg-gray-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
@@ -848,11 +849,6 @@ select {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-
-.bg-gray-200 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
 
 .px-3 {
@@ -888,14 +884,6 @@ select {
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
-}
-
-.pb-3 {
-  padding-bottom: 0.75rem;
-}
-
-.pt-4 {
-  padding-top: 1rem;
 }
 
 .text-right {
