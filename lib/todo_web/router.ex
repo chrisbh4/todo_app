@@ -23,6 +23,8 @@ defmodule TodoWeb.Router do
     # get "/", PageController, :index
     live "/" , HomeLive
     live "/edit", EditLive
+    live "/comments", CommentLive
+    live "/comments/edit", EditCommentLive
   end
 
   # Other scopes may use custom stacks.
