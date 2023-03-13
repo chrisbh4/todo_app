@@ -106,7 +106,7 @@ defmodule TodoWeb.HomeLive do
                 <h3 class="mx-4">
                   <%= item.priority_value %>
                 </h3>
-                
+
                 <button class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3   text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
                 <%= live_redirect "Edit Me",
                   to: Routes.live_path(@socket, TodoWeb.EditLive , id: item.id) %>
