@@ -17,13 +17,14 @@ defmodule TodoWeb.EditLive do
     id = String.to_integer(params["id"])
     selected_item = TodoItems.get_item!(id)
 
-    IO.inspect(selected_item)
+
 
     {:noreply, assign(socket, id: id, selected_item: selected_item)}
   end
 
 
   def handle_event("update_item", %{"item" => values} , socket ) do
+    IO.inspect(values)
 
     {:ok, updated_item} = TodoItems.update_item(socket.assigns.selected_item ,values)
 

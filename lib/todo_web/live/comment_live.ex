@@ -9,6 +9,8 @@ alias Todo.Comment
   import Todo.Comment
   alias Todo.Comments
 
+  alias TodoWeb.Router.Helpers, as: Routes
+
   def mount(_url, _params, socket ) do
     changeset = Comment.changeset(%Comment{})
 
@@ -66,6 +68,11 @@ alias Todo.Comment
 
         <div class=' flex justify-around'>
           <h1> <%= c.text %> </h1>
+          <button class="inline-flex justify-center rounded-md bg-indigo-600 py-2 px-3   text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+                <%= live_redirect "Edit Me",
+                  to: Routes.live_path(@socket, TodoWeb.EditCommentLive , id: c.id) %>
+          </button>
+
           <button value={"#{c.id}"} phx-click="delete_comment" > Delete </button>
         </div>
         <% end %>
